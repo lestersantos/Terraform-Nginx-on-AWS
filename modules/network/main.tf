@@ -1,10 +1,9 @@
 # Locals
 locals {
   mytags ={
-    Name = "ls-tf"
+    Name = "${var.project_name}"
     Env = var.environment == "qa" ? "Es qa" : var.environment
     Owner = "Lester Santos"
-    New = "tag"
   }
 }
 
@@ -35,13 +34,15 @@ resource "aws_eip" "ls-ei" {
 
 # # Create a NAT gateway
 
-resource "aws_nat_gateway" "ls-NATgw" {
+resource "aws_nat_gateway" "natgw" {
   allocation_id = aws_eip.ls-ei.id
   subnet_id     = aws_subnet.public[0].id
 
-  tags = {
-    Name = "LS trr NAT gateway"
-  }
+  tags = merge(local.mytags, {Name = "${local.mytags.Name}-NATGW"})
+
+  # tags = {
+  #   Name = "LS trr NAT gateway"
+  # }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
   # on the Internet Gateway for the VPC.
@@ -96,7 +97,7 @@ resource "aws_route_table" "RT-private" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.ls-NATgw.id
+    gateway_id = aws_nat_gateway.natgw.id
   }
 
   # tags = {

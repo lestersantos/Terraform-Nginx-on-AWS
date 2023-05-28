@@ -1,0 +1,14 @@
+#object structure
+vpc_module = {
+    vpc_cidr = "10.0.0.0/16"
+    environment = "dev"
+}
+
+launch_template_module = {
+  instance_size = "t2.micro"
+  disk_size = 8
+  ami = "ami-0889a44b331db0194"
+  #ami-0715c1897453cabd1
+}
+
+project_name = "ls-tf-p1"
