@@ -25,6 +25,13 @@ resource "aws_launch_template" "lt" {
 
   user_data = filebase64("${path.module}/init.sh")
 
+  tags = merge(local.mytags, {Name = "${local.mytags.Name}-EC2-nginx-webserver"})
+  description = "EC2 Backend running nginx"
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = merge(local.mytags, {Name = "${local.mytags.Name}-EC2-nginx-webserver"})
+  }
 }
 #-------------AWS INSTANCE PROFILE--------------------------
 resource "aws_iam_instance_profile" "profile" {
