@@ -30,6 +30,7 @@ resource "aws_internet_gateway" "gw" {
 # Allocate an EllasticIP
 resource "aws_eip" "ls-ei" {
   vpc = true
+  tags = merge(local.mytags, {Name = "${local.mytags.Name}-EIP"})
 }
 
 # # Create a NAT gateway
@@ -56,10 +57,9 @@ resource "aws_subnet" "public" {
   count = 2 #makes this resource an array
   vpc_id     = aws_vpc.ls-vpc.id
   cidr_block = cidrsubnet(var.vpc_cidr,8,count.index)
-  availability_zone = "us-east-2a"
+  # availability_zone = "us-east-2a"
+  availability_zone = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
-  #tags = merge(local.mytags, {custom = "pb-10.0.${count.index}.0/24"})
-  #tags = merge(local.mytags, {custom = "pb-${cidrsubnet(var.vpc_cidr,8,count.index)}"})
   tags = merge(local.mytags, {Name = "${local.mytags.Name}-pb-${cidrsubnet(var.vpc_cidr,8,count.index)}"})
 }
 
@@ -69,9 +69,8 @@ resource "aws_subnet" "private" {
   count = 2
   vpc_id     = aws_vpc.ls-vpc.id
   cidr_block = cidrsubnet(var.vpc_cidr,8,count.index + length(aws_subnet.public))
-  availability_zone = "us-east-2a"
-  #tags =  merge(local.mytags, {custom = "pv-10.0.3.0/24"})
-  # tags = merge(local.mytags, {custom = "pb-${cidrsubnet(var.vpc_cidr,8,count.index)}"})
+  # availability_zone = "us-east-2a"
+  availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = merge(local.mytags, {Name = "${local.mytags.Name}-pv-${cidrsubnet(var.vpc_cidr,8,count.index + length(aws_subnet.public))}"})
 }
 

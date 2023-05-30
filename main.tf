@@ -4,6 +4,7 @@ module "vpc" {
   #Parameters to costumize the module network
   vpc_cidr    = var.vpc_module["vpc_cidr"]
   environment = var.vpc_module["environment"]
+  project_name = var.project_name
 }
 
 module "launch_template" {

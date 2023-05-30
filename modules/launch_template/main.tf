@@ -1,26 +1,23 @@
-# Launch template from terraform
+# Locals
+locals {
+  mytags ={
+    Name = "${var.project_name}"
+    Owner = "Lester Santos"
+  }
+}
 
+# Launch template from terraform
 resource "aws_launch_template" "lt" {
   name          = "${var.project_name}-lt-${terraform.workspace}"
   image_id      = var.ami
   instance_type = var.instance_size
 
-  # Volume configuration 
-  block_device_mappings {
-    device_name = "/dev/sda1" #Where are we mounting the volume
-
-    ebs {
-      volume_size = var.disk_size
-      encrypted   = "true"
-    }
-  }
-
   iam_instance_profile {
-    name = aws_iam_instance_profile.profile.arn
+    arn = aws_iam_instance_profile.profile.arn
   }
 
   network_interfaces {
-    associate_public_ip_address = false
+    associate_public_ip_address = true
     delete_on_termination       = true
     device_index                = 0
     security_groups             = [aws_security_group.allow_tls.id]
@@ -34,8 +31,8 @@ resource "aws_iam_instance_profile" "profile" {
   name = "${var.project_name}-profile"
   role = aws_iam_role.role.name
 }
-
-data "aws_iam_policy_document" "assume_role" {
+#-------------AWS TRUSTED POLICY DOCUMENT ----------------
+data "aws_iam_policy_document" "trust_policy_ec2" {
   statement {
     effect = "Allow"
 
@@ -47,10 +44,18 @@ data "aws_iam_policy_document" "assume_role" {
     actions = ["sts:AssumeRole"]
   }
 }
+#------------AWS IAM ROLE --------------------------------
 resource "aws_iam_role" "role" {
   name               = "${var.project_name}-role"
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.trust_policy_ec2.json
+  tags = local.mytags
+}
+#----------------------------------------------------------
+#------------------ AWS IAM ROLE POLICY ATTACHMENT --------
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  role       = aws_iam_role.role.name
+  policy_arn = "arn:aws:iam::737584674007:policy/lsS3RestrictedPolicy"
 }
 #----------------------------------------------------------
 

@@ -7,3 +7,7 @@ variable "environment" {
   description = "Type the enviroment name"
   default = "dev"
 }
+
+variable "project_name" {
+  description = "Project Name"
+}

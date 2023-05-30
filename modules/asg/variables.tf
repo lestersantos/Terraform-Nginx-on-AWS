@@ -8,5 +8,5 @@ variable "subnets"{
 }
 
 variable "project_name" {
-  
+  description = "Project Name"
 }
