@@ -16,4 +16,9 @@ alb_module = {
   ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
 
+route53_module = {
+  hosted_zone_name = "training.test-something.com"
+  record_name = "lester"
+}
+
 project_name = "ls-tf-p1"

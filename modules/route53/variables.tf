@@ -1,12 +1,15 @@
-#vARIABLES
-variable "lt_id" {
-  description = "Type the VPC CIDR"
+variable "alb_dns_name" {
+  description = "Application Load Balancer DNS name"
 }
 
-variable "subnets"{
-  type = list(string)
+variable "alb_zone_id" {
+  description = "Application Load Balancer Hosted zone ID"
 }
 
-variable "project_name" {
-  description = "Project Name"
+variable "hosted_zone_name" {
+  description = "Route53 Hosted Zone Name"
+}
+
+variable "record_name" {
+  description = "Route53 Hosted Zone new Record Name"
 }

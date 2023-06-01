@@ -32,3 +32,11 @@ module "alb" {
     acm_certificate = var.alb_module["acm_certificate"]
     ssl_policy = var.alb_module["ssl_policy"]
 }
+
+module route53_module {
+    source = "./modules/route53"
+    alb_dns_name = module.alb.alb_dns_name
+    alb_zone_id = module.alb.alb_zone_id
+    record_name = var.route53_module["record_name"]
+    hosted_zone_name = var.route53_module["hosted_zone_name"]
+}

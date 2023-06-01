@@ -1,14 +1,19 @@
-//AUTOSCALING GROUP MODULE
-resource "aws_autoscaling_group" "bar" {
-  name               = "${var.project_name}-asg"
-  desired_capacity   = 1
-  max_size           = 1
-  min_size           = 1
+data "aws_route53_zone" "primary" {
+  name         = var.hosted_zone_name
+  private_zone = false
+}
 
-  launch_template {
-    id      = var.lt_id
-    version = "$Latest"
+resource "aws_route53_record" "record" {
+  zone_id = aws_route53_zone.primary.zone_id
+  # Z06886031V6MDUVE7YHG7
+  name    = var.record_name
+  type    = "A"
+  #ttl     = 300
+  
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = true
   }
-
-  vpc_zone_identifier = var.subnets
+  #records = [aws_eip.lb.public_ip]
 }

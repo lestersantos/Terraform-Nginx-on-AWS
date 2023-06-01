@@ -13,3 +13,7 @@ variable "launch_template_module"{
 variable "alb_module"{
     description = "Set of variables for Application Load Balancer Module"
 }
+
+variable "route53_module" {
+    description = "Set of variables for Route53 Record Module"
+}
