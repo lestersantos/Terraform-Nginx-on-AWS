@@ -15,7 +15,7 @@ resource "aws_lb" "alb" {
   tags = merge(local.mytags, {Name = "${local.mytags.Name}-alb"})
 }
 
-#-------------AWS ALB LISTENER ----------------------------
+#-------------AWS HTTPS ALB LISTENER ----------------------------
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "443"
@@ -27,6 +27,28 @@ resource "aws_lb_listener" "listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.albtg.arn
+  }
+}
+#---------------------------------------------------------
+
+#-------------AWS HTTP ALB LISTENER REDIRECT ACTION ------
+resource "aws_lb_listener" "redirect_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  tags = merge(local.mytags, {Name = "${local.mytags.Name}-http-alb-listener"})
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+      host        = "#{host}"
+      path        = "/#{path}"
+      query       = "#{query}"
+    }
   }
 }
 #---------------------------------------------------------
