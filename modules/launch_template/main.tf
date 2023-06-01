@@ -68,24 +68,26 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
 
 #-------------AWS SECURITY GROUP --------------------------
 resource "aws_security_group" "allow_tls" {
-  name        = "${var.project_name}-sg"
-  description = "Allow TLS inbound traffic"
+  name        = "${var.project_name}-EC2Webserver-sg"
+  description = "Allows traffic from ALB to backend instances"
   vpc_id      = var.vpc_id
+  tags = merge(local.mytags, {Name = "${local.mytags.Name}-EC2Webserver-sg"})
 
   ingress {
     description = "HTTPS from anywhere"
     from_port   = 443 # one single port
     to_port     = 443 # both the same port number
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.alb_sg_id]
   }
 
   ingress {
-    description = "HTTPS from anywhere"
+    description = "HTTP from anywhere"
     from_port   = 80 # one single port
     to_port     = 80 # both the same port number
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [var.alb_sg_id]
   }
 
   egress {

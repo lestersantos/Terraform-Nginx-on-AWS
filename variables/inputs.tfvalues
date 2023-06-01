@@ -7,8 +7,13 @@ vpc_module = {
 launch_template_module = {
   instance_size = "t2.micro"
   disk_size = 8
-  ami = "ami-0889a44b331db0194"
+  ami = "ami-0ab193018f3e9351b"
   #ami-0715c1897453cabd1
+}
+
+alb_module = {
+  acm_certificate = "arn:aws:acm:us-west-2:737584674007:certificate/1d85b2a9-7af9-4347-addf-1e6fe23964f7"
+  ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
 
 project_name = "ls-tf-p1"

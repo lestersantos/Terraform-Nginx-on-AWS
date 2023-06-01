@@ -11,8 +11,6 @@ variable "instance_size" {
   description = "Instance size fo the Launch Template"
 }
 
-#"ami-0889a44b331db0194"
-
 variable "disk_size" {
   type        = number
   description = "Disk size in GB"
@@ -32,4 +30,8 @@ variable "ami" {
 
 variable "project_name" {
   description = "Project Name"
+}
+
+variable "alb_sg_id" {
+  description = "Specify the Application Load Balancer Security Group id"
 }

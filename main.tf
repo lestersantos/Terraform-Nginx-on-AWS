@@ -14,11 +14,21 @@ module "launch_template" {
   disk_size     = var.launch_template_module["disk_size"]
   ami           = var.launch_template_module["ami"]
   project_name  = var.project_name
+  alb_sg_id     = module.alb.alb_sg_id
 }
 
-module "autoscaling_group"{
-  source = "./modules/asg"
-  lt_id  = module.launch_template.lt_id
-  subnets = module.vpc.vpc_public_subnets
-  project_name = var.project_name
+# module "autoscaling_group"{
+#   source = "./modules/asg"
+#   lt_id  = module.launch_template.lt_id
+#   subnets = module.vpc.vpc_public_subnets
+#   project_name = var.project_name
+# }
+
+module "alb" {
+    source = "./modules/alb"
+    vpc_id = module.vpc.vpc_id
+    subnets = module.vpc.vpc_public_subnets
+    project_name = var.project_name
+    acm_certificate = var.alb_module["acm_certificate"]
+    ssl_policy = var.alb_module["ssl_policy"]
 }
