@@ -4,7 +4,7 @@ data "aws_route53_zone" "primary" {
 }
 
 resource "aws_route53_record" "record" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = data.aws_route53_zone.primary.zone_id
   # Z06886031V6MDUVE7YHG7
   name    = var.record_name
   type    = "A"
