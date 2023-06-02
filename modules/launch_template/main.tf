@@ -11,6 +11,7 @@ resource "aws_launch_template" "lt" {
   name          = "${var.project_name}-lt-${terraform.workspace}"
   image_id      = var.ami
   instance_type = var.instance_size
+  update_default_version = true
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.profile.arn
