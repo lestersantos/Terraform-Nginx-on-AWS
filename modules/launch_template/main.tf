@@ -24,7 +24,8 @@ resource "aws_launch_template" "lt" {
     security_groups             = [aws_security_group.allow_tls.id]
   }
 
-  user_data = filebase64("${path.module}/init.sh")
+  # user_data = filebase64("${path.module}/init.sh")
+    user_data = base64encode(replace(file("${path.module}/init.sh"),"efs_id",var.efs_id))
 
   tags = merge(local.mytags, {Name = "${local.mytags.Name}-EC2-nginx-webserver"})
   description = "EC2 Backend running nginx"

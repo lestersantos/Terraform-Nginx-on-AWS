@@ -7,18 +7,18 @@ vpc_module = {
 launch_template_module = {
   instance_size = "t2.micro"
   disk_size = 8
-  ami = "ami-0ab193018f3e9351b"
+  ami = "ami-0e1c5be2aa956338b"
   #ami-0715c1897453cabd1
 }
 
 alb_module = {
-  acm_certificate = "arn:aws:acm:us-west-2:737584674007:certificate/1d85b2a9-7af9-4347-addf-1e6fe23964f7"
+  acm_certificate = "arn:aws:acm:eu-west-2:737584674007:certificate/20a6c3c2-c269-445a-8c24-8c8d0acc57c6"
   ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
 
 route53_module = {
   hosted_zone_name = "training.test-something.com"
-  record_name = "lester"
+  record_name = "lester-eu"
 }
 
-project_name = "ls-tf-p1"
+project_name = "ls-tf-p1-eu"

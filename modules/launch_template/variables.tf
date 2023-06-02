@@ -35,3 +35,7 @@ variable "project_name" {
 variable "alb_sg_id" {
   description = "Specify the Application Load Balancer Security Group id"
 }
+
+variable "efs_id" {
+  description = "Specify the EFS id"
+}
