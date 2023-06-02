@@ -17,6 +17,7 @@ data "aws_availability_zones" "available" {
 resource "aws_vpc" "ls-vpc" {
   cidr_block = var.vpc_cidr
   tags = merge(local.mytags, {Name = "${local.mytags.Name}-vpc"})
+  enable_dns_hostnames = true
 }
 
 # Create an Internet gateway

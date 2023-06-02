@@ -40,3 +40,11 @@ module route53_module {
     record_name = var.route53_module["record_name"]
     hosted_zone_name = var.route53_module["hosted_zone_name"]
 }
+
+module efs_module {
+    source = "./modules/efs"
+    project_name = var.project_name
+    vpc_id = module.vpc.vpc_id
+    subnets = module.vpc.vpc_public_subnets
+    backend_sg_id = module.launch_template.backend_sg_id
+}
