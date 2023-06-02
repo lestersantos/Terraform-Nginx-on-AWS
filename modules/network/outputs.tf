@@ -10,5 +10,5 @@ output "vpc_public_subnets" {
 
 output "vpc_private_subnets" {
     value = aws_subnet.private[*].id #export values
-    description = "Returns an array of public subnets"
+    description = "Returns an array of private subnets"
 }

@@ -12,3 +12,8 @@ output "alb_sg_id" {
     value = aws_security_group.lb_sg.id
     description = "Id of the security group of the Application Load Balancer"
 }
+
+output "alb_tg_arn" {
+    value = aws_lb_target_group.albtg.arn
+    description = "Target Groutp ARN for use with Application Load Balancer"
+}

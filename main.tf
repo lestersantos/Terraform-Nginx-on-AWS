@@ -1,7 +1,6 @@
 # CALL YOUR MODULES
 module "vpc" {
   source = "./modules/network"
-  #Parameters to costumize the module network
   vpc_cidr    = var.vpc_module["vpc_cidr"]
   environment = var.vpc_module["environment"]
   project_name = var.project_name
@@ -9,7 +8,7 @@ module "vpc" {
 
 module "launch_template" {
   source        = "./modules/launch_template"
-  vpc_id        = module.vpc.vpc_id #create a new variable in launch_template module variables
+  vpc_id        = module.vpc.vpc_id
   instance_size = var.launch_template_module["instance_size"]
   disk_size     = var.launch_template_module["disk_size"]
   ami           = var.launch_template_module["ami"]
@@ -17,12 +16,13 @@ module "launch_template" {
   alb_sg_id     = module.alb.alb_sg_id
 }
 
-# module "autoscaling_group"{
-#   source = "./modules/asg"
-#   lt_id  = module.launch_template.lt_id
-#   subnets = module.vpc.vpc_public_subnets
-#   project_name = var.project_name
-# }
+module "autoscaling_group"{
+  source = "./modules/asg"
+  lt_id  = module.launch_template.lt_id
+  subnets = module.vpc.vpc_private_subnets
+  project_name = var.project_name
+  alb_tg_arn = module.alb.alb_tg_arn
+}
 
 module "alb" {
     source = "./modules/alb"
