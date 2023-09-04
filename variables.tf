@@ -17,7 +17,3 @@ variable "alb_module"{
 variable "route53_module" {
     description = "Set of variables for Route53 Record Module"
 }
-
-# variable "efs_module" {
-#     description = "Set of variables for Elastic File System Module"
-# }

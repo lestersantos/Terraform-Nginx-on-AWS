@@ -14,7 +14,7 @@ module "launch_template" {
   ami           = var.launch_template_module["ami"]
   project_name  = var.project_name
   alb_sg_id     = module.alb.alb_sg_id
-  efs_id = module.efs_module.efs_id
+  efs_id        = module.efs_module.efs_id
 }
 
 module "autoscaling_group"{
